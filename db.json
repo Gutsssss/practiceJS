@@ -1,0 +1,49 @@
+{
+  "todo": [
+    {
+      "id": 3,
+      "title": "breakfast",
+      "someTodo": {
+        "one": {
+          "someTitle": "go bathroom",
+          "somedone": false
+        },
+        "two": {
+          "someTitle": "wash your face",
+          "somedone": false
+        }
+      },
+      "done": false
+    },
+    {
+      "title": "learn JS",
+      "id": 1681989623891,
+      "someTodo": {
+        "one": {
+          "someTitle": "functions",
+          "somedone": false
+        },
+        "two": {
+          "someTitle": "async func",
+          "somedone": false
+        }
+      },
+      "done": false
+    },
+    {
+      "title": "qwe",
+      "id": 1682249227531,
+      "someTodo": {
+        "one": {
+          "someTitle": "qwe",
+          "somedone": false
+        },
+        "two": {
+          "someTitle": "qwe",
+          "somedone": false
+        }
+      },
+      "done": false
+    }
+  ]
+}
