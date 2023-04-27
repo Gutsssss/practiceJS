@@ -29,21 +29,6 @@
         }
       },
       "done": false
-    },
-    {
-      "title": "qwe",
-      "id": 1682249227531,
-      "someTodo": {
-        "one": {
-          "someTitle": "qwe",
-          "somedone": false
-        },
-        "two": {
-          "someTitle": "qwe",
-          "somedone": false
-        }
-      },
-      "done": false
     }
   ]
 }

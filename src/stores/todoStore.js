@@ -11,6 +11,9 @@ export const useToDoStore = defineStore("store", {
     },
     getComplitedTodo(state) {
       return state.todo.filter(t => t.done)
+    },
+    getUncoplitedTodo(state) {
+      return state.todo.filter(t => !t.done)
     }
   },
   actions: {
@@ -57,4 +60,6 @@ export const useToDoStore = defineStore("store", {
         }
     }
   },
+  
 });
+

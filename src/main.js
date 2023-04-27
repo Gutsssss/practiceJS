@@ -20,10 +20,10 @@ createApp(App).use(createPinia()).use(vuetify).use(mdiVue,{
 }).mount('#app')
 
 
-let test = 3 * 'a';
-		
-if (test == true) {
-	console.log('+++');
-} else {
-	console.log('---');
-}
+
+let nums = 321006
+let str = String(nums)
+
+if(+str[0] + +str[1] + +str[2] == +str[3] + +str[4] + +str[5]) {
+  console.log('yes')
+}else console.log('no')
