@@ -1,25 +1,37 @@
 <template>
   <div class="container">
-    <formTodo/>
+    <formTodo @create="createTodo"/>
     <div class="tasks">
-        <v-btn class="btn-tasks" @click="filter = 'tasks'">my Task</v-btn>
-        <v-btn class="btn-tasks" @click="filter = 'complited'"
-          >completed Tasks</v-btn
-        >
-      </div>
-    <div class="todos" v-if="(filter === 'tasks')">
-      <dl v-for="item in toDoStore.getUncoplitedTodo" :key="item.id">
+      <v-btn class="btn-tasks" @click="filter = 'tasks'">my Task</v-btn>
+      <v-btn class="btn-tasks" @click="filter = 'complited'"
+        >completed Tasks</v-btn
+      >
+    </div>
+    <div class="todos" v-if="filter === 'tasks'">
+      <dl>
         <dt>
-          <oneTodo :item="item"/>
-          <input type="checkbox" v-model="item.done">
+          <oneTodo
+            :item="item"
+            :index="index"
+            v-for="(item, index) in items"
+            :key="item.id"
+            @deleteTask="deleteTask(index)"
+            @checkedTask="checkedTask"
+          />
         </dt>
       </dl>
     </div>
-    <div class="todos" v-if="(filter === 'complited')">
-      <dl v-for="item in toDoStore.getComplitedTodo" :key="item.id">
+    <div class="todos" v-if="filter === 'complited'">
+      <dl>
         <dt>
-          <oneTodo :item="item"/>
-          <input v-model="item.done" type="checkbox" />
+          <oneTodo
+            :item="item"
+            :index="index"
+            v-for="(item, index) in filtered()"
+            :key="item.id"
+            @deleteTask="deleteTask(index)"
+            @checkedTask="checkedTask"
+          />
         </dt>
       </dl>
     </div>
@@ -27,18 +39,60 @@
 </template>
 
 <script setup>
-import { useToDoStore } from "@/stores/todoStore";
-import { onMounted, ref } from "vue";
+import { ref } from "vue";
 import oneTodo from "./oneTodo.vue";
 import formTodo from "./formTodo.vue";
-const toDoStore = useToDoStore();
+
+let items = ref([
+  {
+    id: 3,
+    title: "breakfast",
+    someTodo: [
+      {
+        id: 51,
+        title: "go bathroom",
+        done: false,
+      },
+      { id: 51, title: "fuckin", done: false },
+    ],
+    done: false,
+  },
+  {
+    id: 4,
+    title: "qwe",
+    someTodo: [
+      {
+        id: 51,
+        title: "ebat",
+        done: false,
+      },
+      { id: 51, title: "sosi", done: false },
+    ],
+    done: true,
+  }
+]);
+
 
 const filter = ref("tasks");
 
+const filtered = () => {
+  return items.value.filter(item => item.done === true)
+};
 
-onMounted(() => {
-  toDoStore.fetchToDo();
-});
+// const uncheckedTask = () => {
+//   return items.value.filter(item => item.done === false)
+// };
+
+const createTodo = (todo) => {
+  items.value.push(todo)
+  console.log(todo)
+}
+const checkedTask = (item) => {
+  console.log(item)
+}
+const deleteTask = (index) => {
+  items.value.splice(index, 1);
+};
 </script>
 
 <style scoped>
@@ -65,27 +119,9 @@ onMounted(() => {
 dl {
   display: flex;
   flex-direction: column;
-  border: 2px solid teal;
   border-radius: 5px;
   margin: 10px;
   position: relative;
   padding: 5px;
 }
-dt {
-  color: teal;
-  font-size: 40px;
-  font-weight: 600;
-}
-dd {
-  color: lightseagreen;
-  font-weight: 600;
-}
-.btn {
-  margin: 10px;
-  /* width: 100px; */
-  background-color: teal;
-  color: white;
-  height: 100px;
-}
-
 </style>

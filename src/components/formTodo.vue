@@ -1,50 +1,49 @@
 <template>
-    <div class="input">
-      <v-text-field
-        v-model="addState.newTodo"
-        label="New todo..."
-        color="blue"
-        theme="light"
-      ></v-text-field>
-      <v-text-field
-        v-model="addState.newSomeTodoOne"
-        label="Edit some todo"
-        color="blue"
-        theme="light"
-      ></v-text-field>
-      <v-text-field
-        v-model="addState.newSomeTodoTwo"
-        label="Edit some todo"
-        color="blue"
-        theme="light"
-      ></v-text-field>
-      <div class="btns">
-        <v-btn class="btn" @click="addToDo">New <v-icon end icon="mdi-checkbox-marked-circle"
-            ><mdicon name="plus"></mdicon></v-icon
-        ></v-btn>
-      </div>
+  <div class="input">
+    <v-text-field
+      v-model="todo.title"
+      label="New todo..."
+      color="blue"
+      theme="light"
+    ></v-text-field>
+    <v-text-field
+      v-model="todo.someTodo[0].title"
+      label="Edit some todo"
+      color="blue"
+      theme="light"
+    ></v-text-field>
+    <div class="btns">
+      <v-btn @click="createTodo" class="btn"
+        >New
+        <v-icon end icon="mdi-checkbox-marked-circle"
+          ><mdicon name="plus"></mdicon></v-icon
+      ></v-btn>
     </div>
+  </div>
 </template>
 
 <script setup>
-import { useToDoStore } from '@/stores/todoStore';
-import { ref } from 'vue';
+import { reactive, defineEmits } from "vue";
+const emit = defineEmits(["create"]);
 
-const toDoStore = useToDoStore()
+let todo = reactive(
+  {
+  title: "",
+  someTodo: [{
+    title: '',
+    done:false
+  }],
+  done:false
+}
+);
 
-const addState = ref({
-  newTodo: "",
-  newSomeTodoOne: "",
-  newSomeTodoTwo: "",
-});
-    const addToDo = () =>
-  toDoStore.newTodo(
-    addState.value.newTodo,
-    addState.value.newSomeTodoOne,
-    addState.value.newSomeTodoTwo
-  );
+const createTodo = () => {
+  todo.id = Date.now();
+  emit('create',todo);
+};
+console.log(todo.someTodo[0].title)
+
 </script>
-
 <style scoped>
 .input {
   display: flex;

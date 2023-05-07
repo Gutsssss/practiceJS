@@ -1,57 +1,52 @@
 <template>
-    <dl>
-  <dt>
-    {{ item.title }}
-  </dt>
-  <dd v-for="(value, index) in item.someTodo" :key="index">
-    {{ value.someTitle }}
-    <input type="checkbox" v-model="value.somedone" />
-  </dd>
-</dl>
-  <v-btn @click="editCurrentItem(item)" class="btn"
-    >Edit
-    <v-icon end icon="mdi-checkbox-marked-circle"
-      ><mdicon name="pencil"></mdicon></v-icon
-  ></v-btn>
-  <v-btn class="ma-2" @click="deleteTodos(item.id)"
+  <dl>
+    <dt>
+      {{ item.title }}
+    </dt>
+    <span v-if="!parentItem" class="line"></span>
+    <dd>
+      <oneTodo
+      v-for="(child, subIndex) in item.someTodo" 
+            v-bind:item="child"
+            :index="subIndex"
+            :key="child.id"
+            :parentItem="item"
+      />
+    </dd>
+  </dl>
+  <input v-if="!parentItem" v-model="done" :id="item.id" :value="props.done" @input="changeCheckbox" type="checkbox">
+  <v-btn v-if="!parentItem" class="ma-2" @click="deleteTask"
     >Delete<v-icon end icon="mdi-checkbox-marked-circle"
       ><mdicon name="delete"></mdicon></v-icon
   ></v-btn>
 </template>
 
-<script>
-import { useToDoStore } from "@/stores/todoStore";
-import { ref } from "vue";
-export default {
-  data() {
-    return { toDoStore: useToDoStore(),
-        addState : ref({
-  newTodo: "",
-  newSomeTodoOne: "",
-  newSomeTodoTwo: "",
-})
-    };
+
+<script setup>
+
+import { defineProps,defineEmits,ref } from "vue";
+
+const done = ref([])
+const props = defineProps({
+  item: Object,
+  index:{
+    required:true
   },
-  props: {
-    item: {
-      type: Object,
-    },
-    someTodo: {
-      type: Object,
-    },
+  parentItem: {
+    required: false,
   },
-  methods: {
-    deleteTodos(item) {
-      this.toDoStore.deleteTodo(item);
-    },
-    editCurrentItem(item) {
-      (this.addState.value.newTodo = item.title),
-        (this.addState.value.newSomeTodoOne = item.someTodo.one.someTitle),
-        (this.addState.value.newSomeTodoTwo = item.someTodo.two.someTitle);
-      console.log(item);
-    },
-  },
-};
+  done:{
+    type:Boolean
+  }
+});
+const emit = defineEmits(['deleteTask','checkedTask'])
+const deleteTask = () => {
+  emit('deleteTask', props.index)
+}
+const changeCheckbox = () => {
+  emit('checkedTask',props.item)
+}
+
 </script>
 
 <style scoped>
@@ -62,6 +57,7 @@ dl {
   margin: 10px;
   position: relative;
   padding: 5px;
+  border: 2px solid teal;
 }
 dt {
   color: teal;
@@ -72,5 +68,8 @@ dd {
   color: lightseagreen;
   font-weight: 600;
   font-size: 20px;
+}
+.line {
+  border-top: 2px solid  teal;
 }
 </style>
